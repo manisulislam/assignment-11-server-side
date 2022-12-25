@@ -21,7 +21,7 @@ async function run(){
     const foodCollection = client.db("foodServices").collection("foods")
     app.get('/services', async(req, res)=>{
       const query = {}
-      const cursor = foodCollection.find(query)
+      const cursor = foodCollection.find(query).limit(3)
       const result = await cursor.toArray()
       res.send(result)
       console.log(result)

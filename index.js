@@ -12,9 +12,9 @@ require('dotenv').config()
 // dbuser password: Nfjkb8oebzOepDG5
 
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.b986vqn.mongodb.net/?retryWrites=true&w=majority`;
-console.log(uri)
+
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 async function run(){
   try{
@@ -27,7 +27,20 @@ async function run(){
       console.log(result)
 
     })
+    app.get('/servicesDetails', async(req,res)=>{
+      const query = {}
+      const cursor = foodCollection.find(query)
+      const result = await cursor.toArray()
+      res.send(result)
+      
+    })
     
+    app.get('/viewDetails/:id', async(req, res)=>{
+      const id = req.params.id;
+      const query = {_id: ObjectId(id)}
+      const result = await foodCollection.findOne(query)
+      res.send(result)
+    })
 
 
   }

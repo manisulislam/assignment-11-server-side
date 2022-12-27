@@ -53,6 +53,19 @@ async function run() {
       res.send(result)
     })
 
+    app.get('/singleReviews', async(req,res)=>{
+      const query = {serviceId: "serviceId"}
+      const result = await foodReviewCollection.find(query).toArray()
+      res.send(result)
+      
+    })
+
+    app.get('/myReviews', async(req,res)=>{
+      const query= {}
+      const result = await foodReviewCollection.find(query).toArray()
+      res.send(result)
+    })
+
 
   }
   finally {

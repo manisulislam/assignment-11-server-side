@@ -21,6 +21,7 @@ async function run() {
     const foodCollection = client.db("foodServices").collection("foods")
 
     const foodReviewCollection = client.db("foodServices").collection("reviews")
+    const foodAddServicesCollection = client.db("foodServices").collection("addServices")
     app.get('/services', async (req, res) => {
       const query = {}
       const cursor = foodCollection.find(query).limit(3)
@@ -65,6 +66,40 @@ async function run() {
       const result = await foodReviewCollection.find(query).toArray()
       res.send(result)
     })
+    app.delete('/myReview/:id', async(req, res)=>{
+      const deleteId = req.params.id;
+      console.log('delete a single id ',deleteId)
+      const query = {_id: ObjectId(deleteId)}
+      const result = await foodReviewCollection.deleteOne(query)
+      
+      res.send(result)
+    })
+
+    app.get('/myReviews/:id', async(req, res)=>{
+      const id = req.params.id;
+      console.log(id)
+      const query = {_id: ObjectId(id)}
+      const result = await foodReviewCollection.findOne(query)
+     
+      res.send(result)
+    })
+
+    app.post('/addServices', async(req, res)=>{
+      const addServicesInfo = req.body;
+      const result = await foodAddServicesCollection.insertOne(addServicesInfo)
+      console.log(result)
+      res.send(result)
+    })
+    
+    //addservices get method 
+    app.get('/addServices',async(req, res)=>{
+      const query = {}
+      const result = await foodAddServicesCollection.find(query).toArray()
+      
+      res.send(result)
+    })
+
+
 
 
   }
